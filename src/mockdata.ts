@@ -98,8 +98,7 @@ export const events = [
         specialty: "Government Leadership",
         description:
           "Opening keynote speaker discussing leadership and healthcare collaboration.",
-        image:
-          "",
+        image: "",
       },
       {
         name: "Dr. Sarah Ahmed",
@@ -136,7 +135,66 @@ export const events = [
     day: 20,
     month: "MAY",
     year: 2026,
-    event_notes: "A short fundraising event for the speaker will take place from 5:30 PM to 6:00 PM.",
+    event_notes:
+      "A short fundraising event for the speaker will take place from 5:30 PM to 6:00 PM.",
+    icon: Mic,
+  },
+  {
+    id: "nima-healthcare-leadership-summit-2026",
+    title: "NIMA Healthcare Leadership Summit 2026",
+    badge: "SPECIAL EVENT",
+
+    featuredSpeaker: [
+      {
+        name: "Dr. Jennifer Lee",
+        title: "Chief Medical Officer",
+        role: "Keynote Speaker",
+        specialty: "Healthcare Leadership",
+        description:
+          "Discussing emerging healthcare trends, physician leadership, and strategic innovation.",
+        image:
+          "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=600&q=80",
+      },
+      {
+        name: "Dr. David Morales",
+        title: "Director of Clinical Operations",
+        role: "Panel Speaker",
+        specialty: "Healthcare Administration",
+        description:
+          "Sharing best practices in operational excellence and patient-centered care.",
+        image:
+          "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=600&q=80",
+      },
+      {
+        name: "Dr. Emily Chen",
+        title: "Innovation & Technology Advisor",
+        role: "Guest Speaker",
+        specialty: "Digital Health",
+        description:
+          "Exploring AI, telemedicine, and the future of healthcare technology.",
+        image:
+          "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80",
+      },
+    ],
+
+    timeRange: "6:00 PM – 9:00 PM",
+    timeNote:
+      "Networking reception, keynote presentations, and leadership panel discussion",
+
+    venue: "Green Valley Ranch Resort",
+    address: "2300 Paseo Verde Pkwy",
+    city: "Henderson, NV 89052",
+
+    image:
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80",
+
+    day: 18,
+    month: "SEP",
+    year: 2026,
+
+    event_notes:
+      "Business attire is recommended. Complimentary dinner and networking reception will be provided following the keynote session.",
+
     icon: Mic,
   },
 ];

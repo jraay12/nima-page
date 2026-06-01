@@ -12,6 +12,7 @@ import AdministratorLayout from "./layouts/AdministratorLayout";
 import DashboardPage from "./pages/private/DashboardPage";
 import EventsPage from "./pages/private/EventsPage";
 import MembersPage from "./pages/private/MembersPage";
+import CreateEventPage from "./pages/private/CreateEventPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/event" element={<EventsPage />} />
         <Route path="/member" element={<MembersPage />} />
+        <Route path="/event/create" element={<CreateEventPage />} />
       </Route>
     </Routes>
   );

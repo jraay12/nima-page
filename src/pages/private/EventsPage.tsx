@@ -1,9 +1,274 @@
-import React from 'react'
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import {
+  CalendarDays,
+  MapPin,
+  Clock,
+  Plus,
+  Search,
+  Filter,
+  BadgeCheck,
+  ChevronRight,
+  Mic,
+  Users,
+  Star,
+} from "lucide-react";
+import { events } from "../../mockdata";
+// Badge color map
+const badgeStyles: Record<string, { bg: string; text: string; dot: string }> = {
+  "SIGNATURE EVENT": {
+    bg: "bg-amber-50",
+    text: "text-amber-700",
+    dot: "bg-amber-400",
+  },
+  CME: { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400" },
+  NETWORKING: {
+    bg: "bg-purple-50",
+    text: "text-purple-700",
+    dot: "bg-purple-400",
+  },
+  WORKSHOP: { bg: "bg-rose-50", text: "text-rose-700", dot: "bg-rose-400" },
+  DEFAULT: {
+    bg: "bg-green-50",
+    text: "text-[#027027]",
+    dot: "bg-[#027027]",
+  },
+};
 
-const EventsPage = () => {
-  return (
-    <div>EventsPage</div>
-  )
+function getBadgeStyle(badge: string) {
+  return badgeStyles[badge?.toUpperCase()] ?? badgeStyles.DEFAULT;
 }
 
-export default EventsPage
+function isPastEvent(month: string, day: number, year: number) {
+  const months: Record<string, number> = {
+    JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
+    JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11,
+  };
+  return new Date(year, months[month] ?? 0, day) < new Date();
+}
+
+const FILTERS = ["All", "Upcoming", "Past", "Signature Event", "CME", "Networking"];
+
+const EventsPage = () => {
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const filtered = events.filter((e: any) => {
+    const matchSearch =
+      e.title.toLowerCase().includes(search.toLowerCase()) ||
+      e.venue.toLowerCase().includes(search.toLowerCase()) ||
+      e.city.toLowerCase().includes(search.toLowerCase());
+
+    const past = isPastEvent(e.month, e.day, e.year);
+
+    const matchFilter =
+      activeFilter === "All" ||
+      (activeFilter === "Upcoming" && !past) ||
+      (activeFilter === "Past" && past) ||
+      e.badge?.toUpperCase() === activeFilter.toUpperCase();
+
+    return matchSearch && matchFilter;
+  });
+
+  return (
+    <div className="max-w-6xl mx-auto">
+      {/* Page header */}
+      <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">Events</h1>
+          <p className="text-sm text-gray-500">
+            {events.length} event{events.length !== 1 ? "s" : ""} total ·{" "}
+            {events.filter((e: any) => !isPastEvent(e.month, e.day, e.year)).length} upcoming
+          </p>
+        </div>
+        <button
+          onClick={() => navigate("/event/create")}
+          className="inline-flex items-center gap-2 bg-[#027027] text-white text-sm font-semibold
+            px-4 py-2.5 rounded-xl transition-all duration-200
+            hover:bg-[#025f22] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#027027]/30"
+        >
+          <Plus className="w-4 h-4" />
+          Create Event
+        </button>
+      </div>
+
+      {/* Search + filters */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        <div className="relative flex-1">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search events, venues, cities…"
+            className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl bg-white text-gray-900
+              placeholder-gray-400 outline-none transition-all
+              focus:border-[#027027] focus:ring-2 focus:ring-[#027027]/10 hover:border-gray-300"
+          />
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              onClick={() => setActiveFilter(f)}
+              className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-150 border
+                ${
+                  activeFilter === f
+                    ? "bg-[#027027] text-white border-[#027027]"
+                    : "bg-white text-gray-500 border-gray-200 hover:border-gray-300 hover:text-gray-700"
+                }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Results count */}
+      {search && (
+        <p className="text-xs text-gray-400 mb-4">
+          {filtered.length} result{filtered.length !== 1 ? "s" : ""} for &quot;{search}&quot;
+        </p>
+      )}
+
+      {/* Events grid */}
+      {filtered.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <div className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+            <CalendarDays className="w-6 h-6 text-gray-400" />
+          </div>
+          <p className="text-gray-700 font-semibold mb-1">No events found</p>
+          <p className="text-sm text-gray-400">Try adjusting your search or filter.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {filtered.map((event: any) => {
+            const past = isPastEvent(event.month, event.day, event.year);
+            const badge = getBadgeStyle(event.badge);
+            const speakerCount = event.featuredSpeaker?.length ?? 0;
+
+            return (
+              <div
+                key={event.id}
+                onClick={() => navigate(`/events/${event.id}`)}
+                className={`group bg-white border border-gray-100 rounded-2xl overflow-hidden cursor-pointer
+                  transition-all duration-250 ease-out
+                  hover:-translate-y-1 hover:border-gray-200 hover:shadow-[0_8px_24px_rgba(0,0,0,0.07)]
+                  ${past ? "opacity-70" : ""}`}
+              >
+                {/* Image */}
+                <div className="relative h-44 bg-gradient-to-br from-[#f0f3f6] to-[#ebf5ee] overflow-hidden">
+                  {event.image ? (
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <CalendarDays className="w-10 h-10 text-[#027027]/20" strokeWidth={1} />
+                    </div>
+                  )}
+
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+                  {/* Date badge */}
+                  <div className="absolute top-3 left-3 bg-white/92 backdrop-blur-sm px-3 py-2 rounded-xl text-center shadow-sm min-w-[48px]">
+                    <p className="text-lg font-bold text-gray-900 leading-none">{event.day}</p>
+                    <p className="text-[10px] font-bold text-[#027027] tracking-widest mt-0.5">{event.month}</p>
+                    <p className="text-[10px] text-gray-400">{event.year}</p>
+                  </div>
+
+                  {/* Past pill */}
+                  {past && (
+                    <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg">
+                      Past
+                    </div>
+                  )}
+
+                  {/* Speaker count */}
+                  {speakerCount > 0 && (
+                    <div className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-lg">
+                      <Users className="w-3 h-3 text-gray-600" />
+                      <span className="text-[11px] font-semibold text-gray-700">
+                        {speakerCount} speaker{speakerCount !== 1 ? "s" : ""}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Body */}
+                <div className="p-4">
+                  {/* Badge */}
+                  <div className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full mb-2.5 ${badge.bg} ${badge.text}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`} />
+                    {event.badge}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-sm font-bold text-gray-900 mb-3 leading-snug line-clamp-2 group-hover:text-[#027027] transition-colors duration-150">
+                    {event.title}
+                  </h3>
+
+                  {/* Meta */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <Clock className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{event.timeRange}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <MapPin className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{event.venue}, {event.city}</span>
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between mt-4 pt-3.5 border-t border-gray-100">
+                    {/* Speakers preview */}
+                    {speakerCount > 0 ? (
+                      <div className="flex items-center gap-1.5">
+                        <div className="flex -space-x-1.5">
+                          {event.featuredSpeaker.slice(0, 3).map((s: any, i: any) => (
+                            <div
+                              key={i}
+                              className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-[#ebf5ee] to-[#d2eedd] overflow-hidden shrink-0"
+                              style={{ zIndex: 3 - i }}
+                            >
+                              {s.image ? (
+                                <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <span className="text-[8px] font-bold text-[#027027]">
+                                    {s.name?.charAt(0) ?? "?"}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                        <span className="text-[11px] text-gray-400">
+                          {speakerCount > 1 ? `+${speakerCount - 1} more` : event.featuredSpeaker[0]?.name}
+                        </span>
+                      </div>
+                    ) : (
+                      <div />
+                    )}
+
+                    <span className="inline-flex items-center gap-0.5 text-xs font-semibold text-[#027027] group-hover:gap-1.5 transition-all duration-150">
+                      View
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default EventsPage;
