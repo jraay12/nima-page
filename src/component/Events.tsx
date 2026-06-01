@@ -33,7 +33,7 @@ function FadeIn({
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -65,7 +65,6 @@ const Events = () => {
   return (
     <div className="py-20 px-6 bg-[#fafafa] overflow-hidden">
       <div className="max-w-7xl mx-auto">
-
         {/* Section Title */}
         <div className="text-center mb-12">
           <FadeIn direction="up" delay={0}>
@@ -83,30 +82,47 @@ const Events = () => {
 
         {/* Events Grid */}
         <div className="grid grid-cols-1 gap-8">
-          {events.slice(0, 3).map((event, i) => (
-            <FadeIn
-              key={event.title}
-              direction={i % 2 === 0 ? "left" : "right"}
-              delay={i * 100}
-            >
-              <NimaEventCard
-                title={event.title}
-                speaker={event.speaker}
-                speakerTitle={event.speakerTitle}
-                timeRange={event.timeRange}
-                timeNote={event.timeNote}
-                venue={event.venue}
-                address={event.address}
-                city={event.city}
-                day={event.day}
-                month={event.month}
-                year={event.year}
-                image={event.image}
-                onRegister={() => console.log("Register:", event.title)}
-                onFindMore={() => console.log("Find more:", event.title)}
-              />
-            </FadeIn>
-          ))}
+          {events && events.length > 0 ? (
+            events.slice(0, 3).map((event, i) => (
+              <FadeIn
+                key={event.title}
+                direction={i % 2 === 0 ? "left" : "right"}
+                delay={i * 100}
+              >
+                <NimaEventCard
+                  title={event.title}
+                  speaker={event.speaker}
+                  speakerTitle={event.speakerTitle}
+                  timeRange={event.timeRange}
+                  timeNote={event.timeNote}
+                  venue={event.venue}
+                  address={event.address}
+                  city={event.city}
+                  day={event.day}
+                  month={event.month}
+                  year={event.year}
+                  image={event.image}
+                  onRegister={() => console.log("Register:", event.title)}
+                  onFindMore={() => console.log("Find more:", event.title)}
+                />
+              </FadeIn>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center py-16 text-center border border-dashed border-gray-300 rounded-2xl bg-white">
+              <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mb-4">
+                <Calendar className="w-5 h-5 text-[#027027]" />
+              </div>
+
+              <h3 className="text-lg font-semibold text-gray-900">
+                No Upcoming Events
+              </h3>
+
+              <p className="text-gray-500 mt-2 max-w-md">
+                There are currently no scheduled events. Please check back later
+                for updates from NIMA.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* View All button */}
@@ -120,7 +136,6 @@ const Events = () => {
             </button>
           </div>
         </FadeIn>
-
       </div>
     </div>
   );
@@ -188,8 +203,12 @@ function NimaEventCard({
 
           {/* Date overlay */}
           <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-2 rounded-lg text-center shadow-sm">
-            <p className="text-xl font-bold text-gray-900 leading-none">{day}</p>
-            <p className="text-xs font-semibold text-[#027027] tracking-widest">{month}</p>
+            <p className="text-xl font-bold text-gray-900 leading-none">
+              {day}
+            </p>
+            <p className="text-xs font-semibold text-[#027027] tracking-widest">
+              {month}
+            </p>
             <p className="text-[10px] text-gray-500">{year}</p>
           </div>
         </div>
@@ -205,7 +224,9 @@ function NimaEventCard({
           </div>
 
           {/* Title */}
-          <h2 className="text-xl font-bold text-gray-900 leading-snug">{title}</h2>
+          <h2 className="text-xl font-bold text-gray-900 leading-snug">
+            {title}
+          </h2>
 
           {/* Speaker */}
           <div className="flex items-start gap-2 text-sm text-gray-600">
@@ -220,7 +241,8 @@ function NimaEventCard({
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Clock className="w-4 h-4" />
             <span>
-              <span className="text-gray-800 font-medium">{timeRange}</span> — {timeNote}
+              <span className="text-gray-800 font-medium">{timeRange}</span> —{" "}
+              {timeNote}
             </span>
           </div>
 
@@ -228,7 +250,9 @@ function NimaEventCard({
           <div className="flex items-start gap-2 text-sm text-gray-600">
             <MapPin className="w-4 h-4 mt-0.5" />
             <div>
-              <p>{venue}, {address}, {city}</p>
+              <p>
+                {venue}, {address}, {city}
+              </p>
               <a
                 href={mapUrl}
                 className="inline-flex items-center gap-1 text-[#027027] text-xs mt-1 hover:underline"
