@@ -5,6 +5,11 @@ import {
   HeartHandshake,
   Landmark,
   Stethoscope,
+  MapPin,
+  Calendar,
+  Users,
+  Mic,
+  BadgeCheck,
 } from "lucide-react";
 
 export const missions = [
@@ -77,5 +82,75 @@ export const boardMembers = [
       "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=600&q=80",
     icon: Handshake,
   },
+];
 
+export const events = [
+  {
+    title: "NIMA Annual Meeting 2026",
+    badge: "SIGNATURE EVENT",
+    speaker: "Stavros Anthony",
+    speakerTitle: "Nevada Lieutenant Governor (Guest Speaker)",
+    timeRange: "5:30 PM – 6:00 PM",
+    timeNote: "Opening keynote and networking session",
+    venue: "Red Rock Country Club",
+    address: "2250 Red Springs Dr",
+    city: "Las Vegas, NV 89135",
+    image:
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
+    day: 20,
+    month: "MAY",
+    year: 2026,
+    icon: Mic,
+  },
+  {
+    title: "NIMA Medical Innovation Forum",
+    badge: "PROFESSIONAL FORUM",
+    speaker: "Dr. Reza Farhadi",
+    speakerTitle: "Chief of Neurology, UCLA Health",
+    timeRange: "2:00 PM – 4:30 PM",
+    timeNote: "Panel discussion on modern clinical advancements",
+    venue: "Las Vegas Convention Center",
+    address: "3150 Paradise Rd",
+    city: "Las Vegas, NV 89109",
+    image:
+      "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=1200&q=80",
+    day: 12,
+    month: "JUN",
+    year: 2026,
+    icon: BadgeCheck,
+  },
+  {
+    title: "Community Health & Outreach Day",
+    badge: "COMMUNITY SERVICE",
+    speaker: "Dr. Leila Hosseini",
+    speakerTitle: "Cardiology Consultant",
+    timeRange: "9:00 AM – 1:00 PM",
+    timeNote: "Free screenings and public health education",
+    venue: "Sunrise Hospital",
+    address: "3186 S Maryland Pkwy",
+    city: "Las Vegas, NV 89109",
+    image:
+      "",
+    day: 5,
+    month: "APR",
+    year: 2026,
+    icon: Users,
+  },
+  {
+    title: "Physician Networking & Gala Night",
+    badge: "NETWORKING EVENT",
+    speaker: "Dr. Michael Rahimi",
+    speakerTitle: "Internal Medicine Specialist",
+    timeRange: "7:00 PM – 11:00 PM",
+    timeNote: "Formal dinner and professional networking",
+    venue: "Wynn Las Vegas",
+    address: "3131 Las Vegas Blvd S",
+    city: "Las Vegas, NV 89109",
+    image:
+      "https://images.unsplash.com/photo-1519167758481-83f29c8f6c8a?auto=format&fit=crop&w=1200&q=80",
+    day: 28,
+    month: "SEP",
+    year: 2026,
+    icon: Calendar,
+  },
 ];

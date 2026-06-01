@@ -1,4 +1,5 @@
 import BoardMember from "../component/BoardMember";
+import Events from "../component/Events";
 import HeroSection from "../component/HeroSection";
 import JoinNima from "../component/JoinNima";
 import MissionVision from "../component/MissionVision";
@@ -10,6 +11,7 @@ const LandingPage = () => {
       <MissionVision />
       <JoinNima />
       <BoardMember />
+      <Events />
     </div>
   );
 };
