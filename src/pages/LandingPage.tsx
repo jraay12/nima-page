@@ -1,5 +1,6 @@
 import BoardMember from "../component/BoardMember";
 import Events from "../component/Events";
+import NimaFooter from "../component/Footer";
 import HeroSection from "../component/HeroSection";
 import JoinNima from "../component/JoinNima";
 import MissionVision from "../component/MissionVision";
@@ -12,6 +13,7 @@ const LandingPage = () => {
       <JoinNima />
       <BoardMember />
       <Events />
+      <NimaFooter />
     </div>
   );
 };
