@@ -21,7 +21,9 @@ const Header = () => {
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   return (
@@ -35,7 +37,6 @@ const Header = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-
             {/* ── Logo + Brand ── */}
             <a
               href="/"
@@ -55,7 +56,10 @@ const Header = () => {
             </a>
 
             {/* ── Desktop Nav ── */}
-            <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+            <nav
+              className="hidden md:flex items-center gap-1"
+              aria-label="Main navigation"
+            >
               {NAV_LINKS.map((link) => (
                 <a
                   key={link.label}
@@ -102,14 +106,18 @@ const Header = () => {
             >
               <span
                 className={`transition-all duration-300 ${
-                  menuOpen ? "opacity-0 rotate-90 scale-50 absolute" : "opacity-100 rotate-0 scale-100"
+                  menuOpen
+                    ? "opacity-0 rotate-90 scale-50 absolute"
+                    : "opacity-100 rotate-0 scale-100"
                 }`}
               >
                 <Menu size={20} strokeWidth={2} />
               </span>
               <span
                 className={`transition-all duration-300 ${
-                  menuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-50 absolute"
+                  menuOpen
+                    ? "opacity-100 rotate-0 scale-100"
+                    : "opacity-0 -rotate-90 scale-50 absolute"
                 }`}
               >
                 <X size={20} strokeWidth={2} />
@@ -203,9 +211,6 @@ const Header = () => {
           </p>
         </div>
       </div>
-
-      {/* Spacer so content isn't hidden behind fixed header */}
-      <div className="h-16" />
     </>
   );
 };

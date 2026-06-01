@@ -3,10 +3,10 @@ import Header from "../component/Header";
 
 const PublicLayout = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen ">
       <Header />
 
-      <main className="flex-1">
+      <main >
         <Outlet />
       </main>
     </div>
