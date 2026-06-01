@@ -3,11 +3,11 @@ import Sidebar from "../component/Sidebar";
 
 const AdministratorLayout = () => {
   return (
-    <div className="flex min-h-screen bg-[#f7f9f7]">
+    <div className="flex min-h-screen bg-[#f7f9f7] ">
       <Sidebar />
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 max-h-screen overflow-y-hidden">
         {/* Top bar */}
         <header className="h-[60px] bg-white border-b border-gray-100 flex items-center justify-end md:justify-between px-6 shrink-0">
           <div className="hidden md:block">
@@ -25,9 +25,11 @@ const AdministratorLayout = () => {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-6">
-          <Outlet />
-        </main>
+        <div className="flex flex-col min-h-screen ">
+          <main className="flex-1 p-6 ">
+            <Outlet />
+          </main>
+        </div>
       </div>
     </div>
   );
