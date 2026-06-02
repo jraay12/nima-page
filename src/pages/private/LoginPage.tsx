@@ -58,7 +58,7 @@ export default function LoginPage() {
       {
         onSuccess: (data) => {
           localStorage.setItem("token", data.token);
-          navigate("/dashboard");
+          navigate("/dashboard", { replace: true });
         },
       },
     );

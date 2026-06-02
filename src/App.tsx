@@ -14,6 +14,8 @@ import EventsPage from "./pages/private/EventsPage";
 import MembersPage from "./pages/private/MembersPage";
 import CreateEventPage from "./pages/private/CreateEventPage";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { PrivateRoutes } from "./routes/PrivateRoutes";
+import { PublicRoutes } from "./routes/PublicRoutes";
 
 function App() {
   const queryClient = new QueryClient();
@@ -28,9 +30,22 @@ function App() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/event-details/:id" element={<EventDetailsPage />} />
         </Route>
-        <Route path="/administrator/login" element={<LoginPage />} />
+        <Route
+          path="/administrator/login"
+          element={
+            <PublicRoutes>
+              <LoginPage />
+            </PublicRoutes>
+          }
+        />
 
-        <Route element={<AdministratorLayout />}>
+        <Route
+          element={
+            <PrivateRoutes>
+              <AdministratorLayout />
+            </PrivateRoutes>
+          }
+        >
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/event" element={<EventsPage />} />
           <Route path="/member" element={<MembersPage />} />
