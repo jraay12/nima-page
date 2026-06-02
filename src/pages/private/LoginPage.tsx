@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Eye, EyeOff, ArrowRight, Lock, Mail, BadgeCheck } from "lucide-react";
 import { Link, useNavigate } from "react-router";
+import { useLogin } from "../../features/user/user.hooks";
 
 // Lightweight animated dot-grid background
 function DotGrid() {
@@ -35,6 +36,9 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
 
+  // react query
+  const loginMutation = useLogin();
+
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
@@ -49,8 +53,15 @@ export default function LoginPage() {
     }
     setLoading(true);
     await new Promise((r) => setTimeout(r, 1400));
-    setLoading(false);
-    // navigate("/dashboard");
+    loginMutation.mutate(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          localStorage.setItem("token", data.token);
+          navigate("/dashboard");
+        },
+      },
+    );
   };
 
   return (
@@ -247,8 +258,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-
 
           {/* Footer */}
           <p className="text-center text-[11px] text-gray-400 mt-10 leading-relaxed">

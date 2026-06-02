@@ -13,27 +13,31 @@ import DashboardPage from "./pages/private/DashboardPage";
 import EventsPage from "./pages/private/EventsPage";
 import MembersPage from "./pages/private/MembersPage";
 import CreateEventPage from "./pages/private/CreateEventPage";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 function App() {
+  const queryClient = new QueryClient();
   return (
-    <Routes>
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/events" element={<EventPage />} />
-        <Route path="/community" element={<CommunityPage />} />
-        <Route path="/event-details/:id" element={<EventDetailsPage />} />
-      </Route>
-      <Route path="/administrator/login" element={<LoginPage />} />
+    <QueryClientProvider client={queryClient}>
+      <Routes>
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/events" element={<EventPage />} />
+          <Route path="/community" element={<CommunityPage />} />
+          <Route path="/event-details/:id" element={<EventDetailsPage />} />
+        </Route>
+        <Route path="/administrator/login" element={<LoginPage />} />
 
-      <Route element={<AdministratorLayout />}>
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/event" element={<EventsPage />} />
-        <Route path="/member" element={<MembersPage />} />
-        <Route path="/event/create" element={<CreateEventPage />} />
-      </Route>
-    </Routes>
+        <Route element={<AdministratorLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/event" element={<EventsPage />} />
+          <Route path="/member" element={<MembersPage />} />
+          <Route path="/event/create" element={<CreateEventPage />} />
+        </Route>
+      </Routes>
+    </QueryClientProvider>
   );
 }
 

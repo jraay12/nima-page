@@ -1,7 +1,16 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate} from "react-router";
 import Sidebar from "../component/Sidebar";
-
+import { useFetchMe } from "../features/user/user.hooks";
 const AdministratorLayout = () => {
+
+  // react router
+  const navigate = useNavigate()
+  const {isError} = useFetchMe()
+
+  if(isError) {
+    localStorage.clear()
+    navigate("/administrator/login")
+  }
   return (
     <div className="flex min-h-screen bg-[#f7f9f7] ">
       <Sidebar />
