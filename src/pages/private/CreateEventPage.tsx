@@ -46,6 +46,8 @@ type EventFormValues = {
   city: string;
   image: File | null;
   event_notes: string;
+  zipCode: number
+  state: string
   featuredSpeaker: Speaker[];
 };
 
@@ -186,6 +188,8 @@ const CreateEventPage = () => {
       timeNote: "",
       venue: "",
       address: "",
+      state: "",
+      zipCode: 0,
       city: "",
       image: null,
       event_notes: "",
@@ -246,7 +250,7 @@ const CreateEventPage = () => {
 
   return (
     <div className=" mx-auto  pb-20">
-      <Breadcrumb />
+      
 
       <div className="mt-4 mb-8 flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -385,59 +389,55 @@ const CreateEventPage = () => {
               subtitle="When will the event take place?"
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {/* DATE PICKER (WIDER) */}
-              <div className="md:col-span-2">
-                <InputField label="Event Date" required>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <InputField label="Event Date" required>
+                <div className="relative">
+                  <CalendarDays className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 z-10" />
+
                   <DatePicker
                     selected={eventDate}
                     onChange={(date: any) => setEventDate(date)}
                     dateFormat="MMMM d, yyyy"
                     placeholderText="Select event date"
-                    className={inputCls + " w-full"}
+                    wrapperClassName="w-full"
+                    className={inputCls + " pl-10 w-full"}
                   />
-                </InputField>
-              </div>
+                </div>
+              </InputField>
 
-              {/* START TIME */}
-              <div className="md:col-span-1">
-                <InputField
-                  label="Start Time"
-                  required
-                  error={errors.start_time?.message}
-                >
-                  <div className="relative">
-                    <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="time"
-                      {...register("start_time", {
-                        required: "Start time is required",
-                      })}
-                      className={inputCls + " pl-10 w-full"}
-                    />
-                  </div>
-                </InputField>
-              </div>
+              <InputField
+                label="Start Time"
+                required
+                error={errors.start_time?.message}
+              >
+                <div className="relative">
+                  <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="time"
+                    {...register("start_time", {
+                      required: "Start time is required",
+                    })}
+                    className={inputCls + " pl-10 w-full"}
+                  />
+                </div>
+              </InputField>
 
-              {/* END TIME */}
-              <div className="md:col-span-1">
-                <InputField
-                  label="End Time"
-                  required
-                  error={errors.end_time?.message}
-                >
-                  <div className="relative">
-                    <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="time"
-                      {...register("end_time", {
-                        required: "End time is required",
-                      })}
-                      className={inputCls + " pl-10 w-full"}
-                    />
-                  </div>
-                </InputField>
-              </div>
+              <InputField
+                label="End Time"
+                required
+                error={errors.end_time?.message}
+              >
+                <div className="relative">
+                  <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="time"
+                    {...register("end_time", {
+                      required: "End time is required",
+                    })}
+                    className={inputCls + " pl-10 w-full"}
+                  />
+                </div>
+              </InputField>
             </div>
           </div>
 
@@ -456,7 +456,9 @@ const CreateEventPage = () => {
                 error={errors.venue?.message}
               >
                 <input
-                  {...register("venue", { required: "Venue name is required" })}
+                  {...register("venue", {
+                    required: "Venue name is required",
+                  })}
                   placeholder="e.g. Green Valley Ranch Resort"
                   className={inputCls}
                 />
@@ -468,23 +470,57 @@ const CreateEventPage = () => {
                 error={errors.address?.message}
               >
                 <input
-                  {...register("address", { required: "Address is required" })}
+                  {...register("address", {
+                    required: "Address is required",
+                  })}
                   placeholder="e.g. 2300 Paseo Verde Pkwy"
                   className={inputCls}
                 />
               </InputField>
 
-              <InputField
-                label="City, State, ZIP"
-                required
-                error={errors.city?.message}
-              >
-                <input
-                  {...register("city", { required: "City is required" })}
-                  placeholder="e.g. Henderson, NV 89052"
-                  className={inputCls}
-                />
-              </InputField>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <InputField label="City" required error={errors.city?.message}>
+                  <input
+                    {...register("city", {
+                      required: "City is required",
+                    })}
+                    placeholder="Henderson"
+                    className={inputCls}
+                  />
+                </InputField>
+
+                <InputField
+                  label="State"
+                  required
+                  error={errors.state?.message}
+                >
+                  <input
+                    {...register("state", {
+                      required: "State is required",
+                    })}
+                    placeholder="NV"
+                    className={inputCls}
+                  />
+                </InputField>
+
+                <InputField
+                  label="ZIP Code"
+                  required
+                  error={errors.zipCode?.message}
+                >
+                  <input
+                    {...register("zipCode", {
+                      required: "ZIP code is required",
+                      pattern: {
+                        value: /^\d{5}(-\d{4})?$/,
+                        message: "Invalid ZIP code",
+                      },
+                    })}
+                    placeholder="89052"
+                    className={inputCls}
+                  />
+                </InputField>
+              </div>
             </div>
           </div>
 
