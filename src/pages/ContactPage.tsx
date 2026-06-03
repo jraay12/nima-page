@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode, type FormEvent } from "react";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { Mail, Send, CheckCircle } from "lucide-react";
 import NimaFooter from "../component/Footer";
 
 function FadeIn({

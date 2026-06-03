@@ -2,18 +2,15 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import {
   ArrowLeft,
-  ArrowRight,
   Calendar,
   Clock,
-  MapPin,
   User,
   ExternalLink,
   BadgeCheck,
   Building2,
   Tag,
   CalendarPlus,
-  ChevronLeft,
-  ChevronRight,
+
 } from "lucide-react";
 import NimaFooter from "../component/Footer";
 import { useFetchEventsById } from "../features/events/events.hook";
@@ -73,7 +70,6 @@ const EventDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
 
   const navigate = useNavigate();
-  const i = Number(id ?? 0);
   const { data: event } = useFetchEventsById(id!);
 
   //effects

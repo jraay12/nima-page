@@ -5,11 +5,7 @@ import {
   HeartHandshake,
   Landmark,
   Stethoscope,
-  MapPin,
-  Calendar,
-  Users,
   Mic,
-  BadgeCheck,
 } from "lucide-react";
 
 export const missions = [
