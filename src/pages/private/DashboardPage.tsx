@@ -19,9 +19,7 @@ import {
   PieChart,
   Pie,
   Cell,
-  Legend,
 } from "recharts";
-import type { Dashboard } from "../../types";
 import { useDashboard } from "../../features/dashboard/dashboard.hook";
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
