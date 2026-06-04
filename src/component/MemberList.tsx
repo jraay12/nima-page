@@ -80,14 +80,22 @@ function tiptapToHtml(node: TiptapDoc | TiptapNode): string {
   }
   const children = (node.content || []).map(tiptapToHtml).join("");
   switch (node.type) {
-    case "doc": return children;
-    case "paragraph": return `<p>${children}</p>`;
-    case "heading": return `<h3>${children}</h3>`;
-    case "bulletList": return `<ul>${children}</ul>`;
-    case "orderedList": return `<ol>${children}</ol>`;
-    case "listItem": return `<li>${children}</li>`;
-    case "blockquote": return `<blockquote>${children}</blockquote>`;
-    default: return children;
+    case "doc":
+      return children;
+    case "paragraph":
+      return `<p>${children}</p>`;
+    case "heading":
+      return `<h3>${children}</h3>`;
+    case "bulletList":
+      return `<ul>${children}</ul>`;
+    case "orderedList":
+      return `<ol>${children}</ol>`;
+    case "listItem":
+      return `<li>${children}</li>`;
+    case "blockquote":
+      return `<blockquote>${children}</blockquote>`;
+    default:
+      return children;
   }
 }
 
@@ -112,7 +120,7 @@ function getInitials(name: string): string {
 function MemberAvatar({
   member,
   size = "md",
-  imageBaseUrl,
+  imageBaseUrl = import.meta.env.VITE_IMAGE_PREFIX,
 }: {
   member: Member;
   size?: "sm" | "md" | "lg";
@@ -141,7 +149,9 @@ function MemberAvatar({
     <div
       className={`${sizeMap[size]} rounded-full shrink-0 bg-[#ebf5ee] flex items-center justify-center ring-2 ring-white shadow-sm`}
     >
-      <span className="font-bold text-[#027027]">{getInitials(member.full_name)}</span>
+      <span className="font-bold text-[#027027]">
+        {getInitials(member.full_name)}
+      </span>
     </div>
   );
 }
@@ -151,7 +161,10 @@ function MemberAvatar({
 function BiographyRenderer({ bio }: { bio: Member["biography"] }) {
   const [expanded, setExpanded] = useState(false);
   const html = resolveBiography(bio);
-  if (!html) return <p className="text-sm text-gray-400 italic">No biography provided.</p>;
+  if (!html)
+    return (
+      <p className="text-sm text-gray-400 italic">No biography provided.</p>
+    );
 
   return (
     <div>
@@ -177,9 +190,13 @@ function BiographyRenderer({ bio }: { bio: Member["biography"] }) {
         className="mt-1 flex items-center gap-1 text-xs font-medium text-[#027027] hover:text-[#025f22] transition-colors"
       >
         {expanded ? (
-          <><ChevronUp className="w-3 h-3" /> Show less</>
+          <>
+            <ChevronUp className="w-3 h-3" /> Show less
+          </>
         ) : (
-          <><ChevronDown className="w-3 h-3" /> Read more</>
+          <>
+            <ChevronDown className="w-3 h-3" /> Read more
+          </>
         )}
       </button>
     </div>
@@ -190,7 +207,7 @@ function BiographyRenderer({ bio }: { bio: Member["biography"] }) {
 
 function AdminMemberCard({
   member,
-  imageBaseUrl,
+  imageBaseUrl = import.meta.env.VITE_IMAGE_PREFIX,
   onEdit,
   onDelete,
 }: {
@@ -258,7 +275,9 @@ function AdminMemberCard({
                 className="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-[#027027] transition-colors"
               >
                 <Mail className="w-3 h-3" />
-                <span className="truncate max-w-[180px]">{member.practice_email}</span>
+                <span className="truncate max-w-[180px]">
+                  {member.practice_email}
+                </span>
               </a>
             )}
             {member.practice_contact_number && (
@@ -301,13 +320,12 @@ function AdminMemberCard({
 
 function PublicMemberCard({
   member,
-  imageBaseUrl,
+  imageBaseUrl = import.meta.env.VITE_IMAGE_PREFIX,
 }: {
   member: Member;
   imageBaseUrl?: string;
 }) {
   const navigate = useNavigate();
-
 
   return (
     <div
@@ -351,7 +369,9 @@ function PublicMemberCard({
               className="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-[#027027] transition-colors"
             >
               <Mail className="w-3 h-3 text-gray-400" />
-              <span className="truncate max-w-[140px]">{member.practice_email}</span>
+              <span className="truncate max-w-[140px]">
+                {member.practice_email}
+              </span>
             </a>
           )}
         </div>
@@ -392,7 +412,9 @@ function PublicMemberCard({
               <Phone className="w-3 h-3" />
               {member.practice_contact_number}
             </span>
-          ) : <span />}
+          ) : (
+            <span />
+          )}
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#027027] group-hover:gap-2 transition-all duration-200">
             View profile
             <ArrowRight className="w-3 h-3" />
@@ -408,7 +430,7 @@ function PublicMemberCard({
 export function MemberList({
   members,
   mode = "admin",
-  imageBaseUrl,
+  imageBaseUrl = import.meta.env.VITE_IMAGE_PREFIX,
   onEdit,
   onDelete,
 }: MemberListProps) {
@@ -447,9 +469,10 @@ export function MemberList({
             type="button"
             onClick={() => setBoardOnly((v) => !v)}
             className={`inline-flex items-center gap-2 text-sm font-medium px-3.5 py-2 rounded-xl border transition-all
-              ${boardOnly
-                ? "bg-amber-50 text-amber-700 border-amber-200"
-                : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+              ${
+                boardOnly
+                  ? "bg-amber-50 text-amber-700 border-amber-200"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
               }`}
           >
             <Crown className="w-4 h-4" />
@@ -501,9 +524,10 @@ export function MemberList({
           type="button"
           onClick={() => setBoardOnly((v) => !v)}
           className={`inline-flex items-center gap-2 text-sm font-medium px-4 py-2.5 rounded-xl border transition-all shadow-sm
-            ${boardOnly
-              ? "bg-amber-50 text-amber-700 border-amber-200"
-              : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+            ${
+              boardOnly
+                ? "bg-amber-50 text-amber-700 border-amber-200"
+                : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
             }`}
         >
           <Crown className="w-4 h-4" />
