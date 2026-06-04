@@ -658,7 +658,7 @@ export function MemberList({
         </button>
       </div>
 
-      {filtered.length === 0 ? (
+      {filtered?.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-gray-400">
           <User className="w-12 h-12 mb-3 opacity-20" />
           <p className="text-base font-medium">No members found</p>
