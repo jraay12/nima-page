@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-
+import { useNavigate } from "react-router";
 const NAV_LINKS = [
   { label: "Members", href: "/members" },
   { label: "Events", href: "/events" },
@@ -11,6 +11,7 @@ const NAV_LINKS = [
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -61,19 +62,20 @@ const Header = () => {
               aria-label="Main navigation"
             >
               {NAV_LINKS.map((link) => (
-                <a
+                <button
                   key={link.label}
-                  href={link.href}
+                  type="button"
+                  onClick={() => navigate(link.href)}
                   className="relative px-4 py-2 text-[14px] font-medium text-zinc-500 rounded-lg
-                             hover:text-zinc-900 hover:bg-zinc-50
-                             transition-all duration-200
-                             after:content-[''] after:absolute after:bottom-0 after:left-4 after:right-4
-                             after:h-[2px] after:bg-[#2d8a4e] after:scale-x-0 after:origin-left
-                             after:transition-transform after:duration-200
-                             hover:after:scale-x-100"
+                 hover:text-zinc-900 hover:bg-zinc-50
+                 transition-all duration-200
+                 after:content-[''] after:absolute after:bottom-0 after:left-4 after:right-4
+                 after:h-[2px] after:bg-[#2d8a4e] after:scale-x-0 after:origin-left
+                 after:transition-transform after:duration-200
+                 hover:after:scale-x-100"
                 >
                   {link.label}
-                </a>
+                </button>
               ))}
             </nav>
 

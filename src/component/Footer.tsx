@@ -1,5 +1,5 @@
 import { Mail } from "lucide-react";
-
+import { useNavigate } from "react-router";
 interface FooterLink {
   label: string;
   href: string;
@@ -15,8 +15,8 @@ const navigation: FooterColumn[] = [
   {
     heading: "Navigation",
     links: [
-      { label: "Members", href: "#" },
-      { label: "Events", href: "#" },
+      { label: "Members", href: "/members" },
+      { label: "Events", href: "/events" },
       { label: "Speakers", href: "#", indented: true },
       { label: "Guest Speeches", href: "#", indented: true },
     ],
@@ -38,13 +38,12 @@ const navigation: FooterColumn[] = [
 ];
 
 export default function NimaFooter() {
+  const navigate = useNavigate();
   return (
     <footer className="bg-white border-t border-gray-200">
       <div className="max-w-5xl mx-auto px-6 py-10">
-
         {/* Top section */}
         <div className="flex flex-col md:grid md:grid-cols-4 gap-8 mb-8">
-
           {/* Brand */}
           <div className="md:col-span-1 flex flex-col gap-4">
             <img
@@ -52,7 +51,6 @@ export default function NimaFooter() {
               alt="NIMA — Nevada Iranian-American Medical Association"
               className="w-32 object-contain"
             />
-           
           </div>
 
           {/* Nav columns — 2-col grid on mobile, flat on desktop */}
@@ -64,13 +62,17 @@ export default function NimaFooter() {
                 </h3>
                 <ul className="flex flex-col gap-2">
                   {col.links.map((link) => (
-                    <li key={link.label} className={link.indented ? "pl-3" : ""}>
-                      <a
-                        href={link.href}
-                        className="text-sm text-gray-500 hover:text-gray-800 transition-colors"
+                    <li
+                      key={link.label}
+                      className={link.indented ? "pl-3" : ""}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => navigate(link.href)}
+                        className="text-sm text-gray-500 hover:text-gray-800 transition-colors text-left"
                       >
                         {link.label}
-                      </a>
+                      </button>
                     </li>
                   ))}
 
@@ -92,16 +94,15 @@ export default function NimaFooter() {
               </div>
             ))}
           </div>
-
         </div>
 
         {/* Bottom bar */}
         <div className="border-t border-gray-200 pt-5">
           <p className="text-xs text-gray-400 text-center">
-            © 2024 NIMA. Nevada Iranian-American Medical Association. All rights reserved.
+            © 2024 NIMA. Nevada Iranian-American Medical Association. All rights
+            reserved.
           </p>
         </div>
-
       </div>
     </footer>
   );

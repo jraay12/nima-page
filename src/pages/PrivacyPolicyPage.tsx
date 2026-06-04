@@ -11,7 +11,7 @@ import {
   Send,
 } from "lucide-react";
 import NimaFooter from "../component/Footer";
-
+import { useNavigate } from "react-router";
 function FadeIn({
   children,
   delay = 0,
@@ -229,6 +229,7 @@ const sections = [
 ];
 
 const PrivacyPolicyPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-[#fafafa] min-h-screen">
       {/* Hero */}
@@ -300,12 +301,13 @@ const PrivacyPolicyPage = () => {
               If you have any questions or concerns about this privacy policy or
               your personal data, don't hesitate to reach out.
             </p>
-            <a
-              href="/contact"
+            <button
+              type="button"
+              onClick={() => navigate("/contact")}
               className="inline-flex items-center gap-2 bg-white text-[#006e25] font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 active:scale-95 transition-all"
             >
               Contact Us
-            </a>
+            </button>
             {/* Decorative */}
             <ShieldCheck
               className="absolute -right-6 -bottom-6 w-36 h-36 text-white/[0.06]"
