@@ -101,9 +101,17 @@ function tiptapToHtml(node: TiptapDoc | TiptapNode): string {
 
 function resolveImageUrl(path: string | null, base?: string): string | null {
   if (!path) return null;
+
   const clean = path.replace(/\\/g, "/");
+
   if (clean.startsWith("http")) return clean;
-  return base ? `${base.replace(/\/$/, "")}/${clean}` : `/${clean}`;
+
+  const normalizedBase = base?.replace(/\/$/, "");
+  const normalizedPath = clean.replace(/^\/+/, ""); // 🔥 FIX HERE
+
+  return normalizedBase
+    ? `${normalizedBase}/${normalizedPath}`
+    : `/${normalizedPath}`;
 }
 
 function getInitials(name: string): string {
@@ -128,7 +136,7 @@ function MemberAvatar({
 }) {
   const [imgError, setImgError] = useState(false);
   const src = resolveImageUrl(member.image_path, imageBaseUrl);
-  console.log(src)
+  console.log(src);
   const sizeMap = {
     sm: "w-10 h-10 text-sm",
     md: "w-14 h-14 text-base",
